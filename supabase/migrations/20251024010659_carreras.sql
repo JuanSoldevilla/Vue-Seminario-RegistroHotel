@@ -1,7 +1,7 @@
 drop table if exists Carrera;
 drop type if exists estados;
 
-create type estados as enum ('activo', 'inicativo', 'en reposo');
+create type estados as enum ('activo', 'inactivo', 'en reposo');
 
 create table
   Carrera(
@@ -10,8 +10,6 @@ create table
     name text not null,
     status estados default 'activo' not null,
     estudiantes text array default array[]::varchar[] not null,
-    anio text not null
-    mes tes not null
+    anio text not null,
+    mes text not null
   );
-
-  insert into Carrera(name,anio,mes) values ('Diseño grafico', '2025','noviembre');

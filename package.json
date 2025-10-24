@@ -16,13 +16,15 @@
     "lint:eslint": "eslint . --fix --cache",
     "lint": "run-s lint:*",
     "format": "prettier --write src/",
-    "supabase:init":"supabase init",
-    "supabase:login":"supabase login",
-    "supabase:link":"supabase link --project-ref mdcqbdxyqelenmapeyua",
+    "supabase:init": "supabase init --force",
+    "supabase:login": "supabase login",
+    "supabase:link": "supabase link --project-ref azmjivtnwzlorheqegcc",
     "db:migrate:new": "supabase migration new carreras",
-    "db:reset":"supabase db reset"
+    "db:reset": "supabase db reset --linked",
+    "db:seed": "node --env-file=.env database/seed.js"
   },
   "dependencies": {
+    "@faker-js/faker": "^10.1.0",
     "@supabase/supabase-js": "^2.76.1",
     "pinia": "^3.0.3",
     "tslib": "^2.8.1",
