@@ -48,3 +48,4 @@ npm run lint
 ```
 # VueJS-AWS
 # Vue-AWS-EcommerceRestaurante
+# Vue-Seminario-RegistroHotel
