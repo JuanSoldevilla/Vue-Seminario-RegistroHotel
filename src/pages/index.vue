@@ -8,9 +8,9 @@
       </RouterLink>
 
       <div class="buscador">
-        <input v-model.number="ventaId" type="number" min="1" placeholder="Ingrese número de venta" class="input" />
-        <RouterLink v-if="ventaId" :to="{ name: '/registros/[id]', params: { id: ventaId } }" class="btn">
-          Ir a la reserva {{ ventaId }}
+        <input v-model.number="reservaId" type="number" min="1" placeholder="Ingrese número de registro" class="input" />
+        <RouterLink v-if="reservaId" :to="{ name: '/registros/[id]', params: { id: reservaId } }" class="btn">
+          Ir a la reserva {{ reservaId }}
         </RouterLink>
       </div>
     </nav>
@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const ventaId = ref<number | null>(null);
+const reservaId = ref<number | null>(null);
 </script>
 
 <style scoped>

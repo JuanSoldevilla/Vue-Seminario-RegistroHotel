@@ -39,7 +39,7 @@ const seedCuartos = async (pisos) => {
         numero: faker.number.int({ min: 100, max: 999 }),
         piso_id: piso.id_piso,
         caracteristicas: faker.helpers.arrayElements(caracteristicas, { min: 1, max: 3 }),
-        estados: faker.helpers.arrayElement(["disponible", "ocupado", "mantenimiento"]),
+        estados: faker.helpers.arrayElement(["disponible", "ocupado"]),
         precio_por_noche: precio,
       });
     }
@@ -69,6 +69,7 @@ const seedHuespedes = async (num) => {
 
 const seedReservas = async (num, huespedes, cuartos) => {
   console.log(`🧾 Insertando ${num} reservas...`);
+
   const reservas = Array.from({ length: num }, () => {
     const huesped = faker.helpers.arrayElement(huespedes);
     const cuarto = faker.helpers.arrayElement(cuartos);
@@ -77,6 +78,7 @@ const seedReservas = async (num, huespedes, cuartos) => {
       from: new Date(new Date().setFullYear(new Date().getFullYear() - 1)),
       to: new Date(),
     });
+
     const dias = faker.number.int({ min: 1, max: 10 });
     const fechaSalida = new Date(fechaEntrada);
     fechaSalida.setDate(fechaEntrada.getDate() + dias);
@@ -92,9 +94,11 @@ const seedReservas = async (num, huespedes, cuartos) => {
     };
   });
 
+  reservas.sort((a, b) => new Date(a.fecha_entrada).getTime() - new Date(b.fecha_entrada).getTime());
+
   const { data, error } = await supabase.from("Reserva").insert(reservas).select("id_reserva");
   if (error) throw error;
-  console.log(`✅ ${data.length} reservas insertadas.`);
+  console.log(`✅ ${data.length} reservas insertadas (ordenadas por fecha de entrada).`);
   return data;
 };
 
