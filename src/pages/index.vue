@@ -3,14 +3,14 @@
     <h1>Dashboard</h1>
 
     <nav class="links">
-      <RouterLink :to="{ name: '/ventas/' }" class="btn">
-        Ir a ventas
+      <RouterLink :to="{ name: '/registros/' }" class="btn">
+        Ir a reservas
       </RouterLink>
 
       <div class="buscador">
         <input v-model.number="ventaId" type="number" min="1" placeholder="Ingrese número de venta" class="input" />
-        <RouterLink v-if="ventaId" :to="{ name: '/ventas/[id]', params: { id: ventaId } }" class="btn">
-          Ir a la venta {{ ventaId }}
+        <RouterLink v-if="ventaId" :to="{ name: '/registros/[id]', params: { id: ventaId } }" class="btn">
+          Ir a la reserva {{ ventaId }}
         </RouterLink>
       </div>
     </nav>

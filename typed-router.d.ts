@@ -37,23 +37,23 @@ declare module 'vue-router/auto-routes' {
       { catchAll: ParamValue<false> },
       | never
     >,
-    '/ventas/': RouteRecordInfo<
-      '/ventas/',
-      '/ventas',
+    '/registros/': RouteRecordInfo<
+      '/registros/',
+      '/registros',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/ventas/[...catchAll]': RouteRecordInfo<
-      '/ventas/[...catchAll]',
-      '/ventas/:catchAll(.*)',
+    '/registros/[...catchAll]': RouteRecordInfo<
+      '/registros/[...catchAll]',
+      '/registros/:catchAll(.*)',
       { catchAll: ParamValue<true> },
       { catchAll: ParamValue<false> },
       | never
     >,
-    '/ventas/[id]': RouteRecordInfo<
-      '/ventas/[id]',
-      '/ventas/:id',
+    '/registros/[id]': RouteRecordInfo<
+      '/registros/[id]',
+      '/registros/:id',
       { id: ParamValue<true> },
       { id: ParamValue<false> },
       | never
@@ -83,21 +83,21 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'src/pages/ventas/index.vue': {
+    'src/pages/registros/index.vue': {
       routes:
-        | '/ventas/'
+        | '/registros/'
       views:
         | never
     }
-    'src/pages/ventas/[...catchAll].vue': {
+    'src/pages/registros/[...catchAll].vue': {
       routes:
-        | '/ventas/[...catchAll]'
+        | '/registros/[...catchAll]'
       views:
         | never
     }
-    'src/pages/ventas/[id].vue': {
+    'src/pages/registros/[id].vue': {
       routes:
-        | '/ventas/[id]'
+        | '/registros/[id]'
       views:
         | never
     }
