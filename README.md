@@ -50,3 +50,4 @@ npm run lint
 # Vue-AWS-EcommerceRestaurante
 # Vue-Seminario-RegistroHotel
 # Vue-Seminario-RegistroHotel
+# Vue-Seminario-RegistroHotel
