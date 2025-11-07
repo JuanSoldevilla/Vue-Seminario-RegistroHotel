@@ -1,125 +1,148 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div class="container">
-    <h1>Reserva número {{ route.params.id }}</h1>
+  <div class="max-w-2xl mx-auto p-6 space-y-8">
+    <h1 class="text-3xl font-semibold text-center">
+      Reserva número {{ route.params.id }}
+    </h1>
 
-    <div v-if="loading" class="loading">Cargando reserva...</div>
-
-    <div v-else-if="reserva" class="reserva-detalle">
-      <p><strong>Huésped:</strong> {{ reserva.Huesped?.nombre }} (DNI: {{ reserva.Huesped?.dni }})</p>
-      <p><strong>Cuarto:</strong> #{{ reserva.Cuarto?.numero }}</p>
-      <p><strong>Piso:</strong> {{ reserva.Cuarto?.Piso?.numero }}</p>
-      <p><strong>Fecha de entrada:</strong> {{ reserva.fecha_entrada }}</p>
-      <p><strong>Fecha de salida:</strong> {{ reserva.fecha_salida }}</p>
-      <p><strong>Total:</strong> ${{ reserva.total?.toFixed(2) }}</p>
-
-      <div v-if="reserva.Cuarto?.caracteristicas?.length">
-        <p><strong>Características del cuarto:</strong></p>
-        <ul>
-          <li v-for="(c, i) in reserva.Cuarto.caracteristicas" :key="i">{{ c }}</li>
-        </ul>
-      </div>
-
-      <p><strong>Estado actual:</strong> {{ reserva.Cuarto?.estados }}</p>
+    <div v-if="loading" class="text-center text-gray-500 py-8">
+      Cargando reserva...
     </div>
 
-    <p v-else class="no-reserva">No se encontró la reserva solicitada.</p>
+    <Card v-else-if="reserva" class="p-6 shadow-md border border-border">
+      <div class="space-y-3">
+        <p>
+          <strong>Huésped:</strong>
+          {{ reserva.Huesped?.nombre }}
+          (DNI: {{ reserva.Huesped?.dni }})
+        </p>
 
-    <RouterLink to="/" class="btn">← Volver al Dashboard</RouterLink>
+        <p>
+          <strong>Cuarto:</strong> #{{ reserva.Cuarto?.numero }}
+        </p>
+
+        <p>
+          <strong>Piso:</strong> {{ reserva.Cuarto?.Piso?.numero }}
+        </p>
+
+        <p>
+          <strong>Fecha de entrada:</strong> {{ reserva.fecha_entrada }}
+        </p>
+
+        <p>
+          <strong>Fecha de salida:</strong> {{ reserva.fecha_salida }}
+        </p>
+
+        <p>
+          <strong>Total: </strong>
+          <span class="font-semibold">${{ reserva.total?.toFixed(2) }}</span>
+        </p>
+
+        <div v-if="reserva.Cuarto?.caracteristicas?.length">
+          <strong>Características del cuarto:</strong>
+          <ul class="list-disc pl-6">
+            <li v-for="(c, i) in reserva.Cuarto.caracteristicas" :key="i">
+              {{ formatCaracteristica(c) }}
+            </li>
+          </ul>
+        </div>
+
+        <p>
+          <strong>Estado actual:</strong> {{ reserva.Cuarto?.estados }}
+        </p>
+      </div>
+    </Card>
+
+    <p v-else class="text-center text-gray-500">
+      No se encontró la reserva solicitada.
+    </p>
+
+    <div class="text-center">
+      <RouterLink to="/">
+        <Button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md transition cursor-pointer">
+          ← Volver al Dashboard
+        </Button>
+      </RouterLink>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import { supabase } from '@/lib/supabaseClient'
+import { Card } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
 interface ReservaDetalle {
   id_reserva: number
-  fecha_entrada: string
-  fecha_salida: string
-  total: number
+  fecha_entrada: string | null
+  fecha_salida: string | null
+  total: number | null
   Huesped?: {
-    nombre: string
-    dni: string
-  }
+    nombre: string | null
+    dni: string | null
+  } | null
   Cuarto?: {
-    numero: number
-    caracteristicas: string[]
-    estados: string
+    numero: number | null
+    caracteristicas: string[] | null
+    estados: string | null
     Piso?: {
-      numero: number
-    }
-  }
+      numero: number | null
+    } | null
+  } | null
 }
 
 const route = useRoute()
 const reserva = ref<ReservaDetalle | null>(null)
 const loading = ref(true)
 
-onMounted(async () => {
-  const id = route.params.id
+async function fetchReserva(id: string | string[]) {
+  loading.value = true
   try {
     const { data, error } = await supabase
       .from('Reserva')
-      .select(`id_reserva, fecha_entrada, fecha_salida, total, Huesped(nombre, dni), Cuarto (numero, caracteristicas, estados, Piso (numero))`)
+      .select(`
+        id_reserva,
+        fecha_entrada,
+        fecha_salida,
+        total,
+        Huesped (nombre, dni),
+        Cuarto (
+          numero,
+          caracteristicas,
+          estados,
+          Piso (numero)
+        )
+      `)
       .eq('id_reserva', id)
       .single()
 
     if (error) {
       console.error('❌ Error al cargar la reserva:', error.message)
+      reserva.value = null
     } else {
       reserva.value = data
     }
   } catch (err) {
     console.error('⚠️ Error inesperado:', err)
+    reserva.value = null
   } finally {
     loading.value = false
   }
+}
+
+function formatCaracteristica(c: string): string {
+  if (!c) return ''
+  const texto = c.replace(/_/g, ' ')
+  return texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase()
+}
+
+onMounted(() => {
+  fetchReserva(route.params.id)
+})
+
+onBeforeRouteUpdate((to) => {
+  fetchReserva(to.params.id)
 })
 </script>
-
-<style scoped>
-.container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 1rem;
-  font-family: Arial, sans-serif;
-}
-
-h1 {
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.reserva-detalle p {
-  margin: 0.4rem 0;
-  line-height: 1.5;
-}
-
-ul {
-  padding-left: 1.2rem;
-}
-
-.loading,
-.no-reserva {
-  color: #666;
-  margin: 1rem 0;
-  text-align: center;
-}
-
-.btn {
-  display: inline-block;
-  margin-top: 1.5rem;
-  background-color: #3b82f6;
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  text-decoration: none;
-  transition: background-color 0.2s;
-}
-
-.btn:hover {
-  background-color: #2563eb;
-}
-</style>

@@ -1,75 +1,21 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div class="dashboard">
-    <h1>Dashboard</h1>
+  <div class="flex flex-col items-center p-8 space-y-8">
+    <h1 class="text-3xl font-semibold">Dashboard</h1>
 
-    <nav class="links">
-      <RouterLink :to="{ name: '/registros/' }" class="btn">
-        Ir a reservas
+    <nav class="flex flex-col items-center gap-6">
+
+      <RouterLink to="/registros">
+        <Button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md transition cursor-pointer">
+          Ir a reservas
+        </Button>
       </RouterLink>
-
-      <div class="buscador">
-        <input v-model.number="reservaId" type="number" min="1" placeholder="Ingrese número de registro" class="input" />
-        <RouterLink v-if="reservaId" :to="{ name: '/registros/[id]', params: { id: reservaId } }" class="btn">
-          Ir a la reserva {{ reservaId }}
-        </RouterLink>
-      </div>
     </nav>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { RouterLink } from 'vue-router'
+import { Button } from '@/components/ui/button'
 
-const reservaId = ref<number | null>(null);
 </script>
-
-<style scoped>
-.dashboard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-}
-
-h1 {
-  margin-bottom: 1.5rem;
-}
-
-.links {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.buscador {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.input {
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  text-align: center;
-  width: 220px;
-}
-
-.btn {
-  background-color: #3b82f6;
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  text-decoration: none;
-  transition: background-color 0.2s;
-  width: 220px;
-  text-align: center;
-}
-
-.btn:hover {
-  background-color: #2563eb;
-}
-</style>
