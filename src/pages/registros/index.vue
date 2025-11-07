@@ -55,10 +55,10 @@
             </TableCell>
 
             <TableCell class="text-center">
-              <Button variant="destructive" class="m-2 cursor-pointer">
+              <Button variant="destructive" class="m-2 hover:bg-destructive-foreground/60 cursor-pointer">
                 <Icon icon="tdesign:delete-filled"></Icon>
               </Button>
-              <Button variant="secondary" class="m-2 cursor-pointer">
+              <Button variant="secondary" class="m-2 hover:bg-secondary-foreground/10 cursor-pointer">
                 <Icon icon="oui:document-edit"></Icon>
               </Button>
             </TableCell>
@@ -73,7 +73,7 @@
         <PaginationPrevious class="cursor-pointer" :disabled="currentPage === 1" />
 
         <template v-for="p in totalPages" :key="p">
-          <PaginationItem class="cursor-pointer" :value="p" :is-active="p === currentPage">
+          <PaginationItem class="cursor-pointer border-gray-700 hover:bg-secondary-foreground/10" :value="p" :is-active="p === currentPage">
             {{ p }}
           </PaginationItem>
         </template>
