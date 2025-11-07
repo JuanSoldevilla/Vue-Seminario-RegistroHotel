@@ -19,7 +19,7 @@
     </div>
 
     <div v-else class="overflow-x-auto">
-      <Table class="table-fixed w-full border-1">
+      <Table class="table-fixed w-full">
         <TableHeader class="bg-blue-600 hover:bg-blue-700">
           <TableRow>
             <TableHead class="text-white w-16 text-center">N°</TableHead>
