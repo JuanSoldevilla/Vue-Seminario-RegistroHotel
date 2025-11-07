@@ -19,34 +19,41 @@
     </div>
 
     <div v-else class="overflow-x-auto">
-      <Table>
+      <Table class="table-fixed w-full border-1">
         <TableHeader class="bg-blue-600 hover:bg-blue-700">
           <TableRow>
-            <TableHead class="text-white">ID</TableHead>
-            <TableHead class="text-white">Huésped</TableHead>
-            <TableHead class="text-white">DNI</TableHead>
-            <TableHead class="text-white">Cuarto</TableHead>
-            <TableHead class="text-white">Piso</TableHead>
-            <TableHead class="text-white">Entrada</TableHead>
-            <TableHead class="text-white">Salida</TableHead>
-            <TableHead class="text-right text-white">Total</TableHead>
-            <TableHead class="w-60 text-center text-white">Funciones</TableHead>
+            <TableHead class="text-white w-16 text-center">N°</TableHead>
+            <TableHead class="text-white w-50 text-center">Huésped</TableHead>
+            <TableHead class="text-white w-40 text-center">DNI</TableHead>
+            <TableHead class="text-white w-20 text-center">Cuarto</TableHead>
+            <TableHead class="text-white w-20 text-center">Piso</TableHead>
+            <TableHead class="text-white w-30 text-center">Entrada</TableHead>
+            <TableHead class="text-white w-30 text-center">Salida</TableHead>
+            <TableHead class="text-white w-30 text-center">Total</TableHead>
+            <TableHead class="text-white w-50 text-center">Funciones</TableHead>
           </TableRow>
         </TableHeader>
 
         <TableBody>
-          <TableRow v-for="reserva in reservas.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)"
-            :key="reserva.id_reserva" class="hover:bg-muted/50 transition-colors">
-            <TableCell class="font-medium">{{ reserva.id_reserva }}</TableCell>
-            <TableCell>{{ reserva.Huesped?.nombre }}</TableCell>
-            <TableCell>{{ reserva.Huesped?.dni }}</TableCell>
-            <TableCell>#{{ reserva.Cuarto?.numero }}</TableCell>
-            <TableCell>{{ reserva.Cuarto?.Piso?.numero }}</TableCell>
-            <TableCell>{{ reserva.fecha_entrada }}</TableCell>
-            <TableCell>{{ reserva.fecha_salida }}</TableCell>
-            <TableCell class="text-right font-semibold">
+          <TableRow
+            v-for="(reserva, index) in reservas.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)"
+            :key="reserva.id_reserva" class="hover:bg-muted/50 transition-colors border-t">
+            <!-- Mostrar número de fila, no id -->
+            <TableCell class="font-medium text-center">
+              {{ (currentPage - 1) * itemsPerPage + index + 1 }}
+            </TableCell>
+
+            <TableCell class="truncate text-center">{{ reserva.Huesped?.nombre }}</TableCell>
+            <TableCell class="truncate text-center">{{ reserva.Huesped?.dni }}</TableCell>
+            <TableCell class="truncate text-center">#{{ reserva.Cuarto?.numero }}</TableCell>
+            <TableCell class="truncate text-center">Piso #{{ reserva.Cuarto?.Piso?.numero }}</TableCell>
+            <TableCell class="truncate text-center">{{ reserva.fecha_entrada }}</TableCell>
+            <TableCell class="truncate text-center">{{ reserva.fecha_salida }}</TableCell>
+
+            <TableCell class="font-semibold truncate text-center">
               ${{ reserva.total.toFixed(2) }}
             </TableCell>
+
             <TableCell class="text-center">
               <Button variant="destructive" class="m-2 cursor-pointer">
                 <Icon icon="tdesign:delete-filled"></Icon>
@@ -109,7 +116,7 @@ onMounted(async () => {
         id_reserva, fecha_entrada, fecha_salida, total,
         Huesped ( nombre, dni ),
         Cuarto ( numero, Piso ( numero ) )
-      `).order('id_reserva', { ascending: true })
+      `).order('id_reserva', { ascending: false })
 
     if (error) {
       console.error('❌ Error al cargar reservas:', error.message)
