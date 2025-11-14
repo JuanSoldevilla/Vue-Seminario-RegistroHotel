@@ -88,9 +88,34 @@ export type Database = {
         }
         Relationships: []
       }
+      Producto: {
+        Row: {
+          activo: boolean
+          descripcion: string | null
+          id_producto: number
+          nombre: string
+          precio_unitario: number
+        }
+        Insert: {
+          activo?: boolean
+          descripcion?: string | null
+          id_producto?: number
+          nombre: string
+          precio_unitario: number
+        }
+        Update: {
+          activo?: boolean
+          descripcion?: string | null
+          id_producto?: number
+          nombre?: string
+          precio_unitario?: number
+        }
+        Relationships: []
+      }
       Reserva: {
         Row: {
           cuarto_id: number | null
+          estado: Database["public"]["Enums"]["estado_reserva"]
           fecha_entrada: string | null
           fecha_salida: string | null
           huesped_id: number | null
@@ -99,6 +124,7 @@ export type Database = {
         }
         Insert: {
           cuarto_id?: number | null
+          estado?: Database["public"]["Enums"]["estado_reserva"]
           fecha_entrada?: string | null
           fecha_salida?: string | null
           huesped_id?: number | null
@@ -107,6 +133,7 @@ export type Database = {
         }
         Update: {
           cuarto_id?: number | null
+          estado?: Database["public"]["Enums"]["estado_reserva"]
           fecha_entrada?: string | null
           fecha_salida?: string | null
           huesped_id?: number | null
@@ -130,6 +157,48 @@ export type Database = {
           },
         ]
       }
+      ReservaDetalle: {
+        Row: {
+          cantidad: number
+          id_detalle: number
+          precio_unitario: number
+          producto_id: number
+          reserva_id: number
+          subtotal: number
+        }
+        Insert: {
+          cantidad?: number
+          id_detalle?: number
+          precio_unitario: number
+          producto_id: number
+          reserva_id: number
+          subtotal: number
+        }
+        Update: {
+          cantidad?: number
+          id_detalle?: number
+          precio_unitario?: number
+          producto_id?: number
+          reserva_id?: number
+          subtotal?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ReservaDetalle_producto_id_fkey"
+            columns: ["producto_id"]
+            isOneToOne: false
+            referencedRelation: "Producto"
+            referencedColumns: ["id_producto"]
+          },
+          {
+            foreignKeyName: "ReservaDetalle_reserva_id_fkey"
+            columns: ["reserva_id"]
+            isOneToOne: false
+            referencedRelation: "Reserva"
+            referencedColumns: ["id_reserva"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -144,6 +213,7 @@ export type Database = {
         | "aire_acondicionado"
         | "baño_privado"
         | "jacuzzi"
+      estado_reserva: "en_curso" | "finalizado"
       estados: "disponible" | "ocupado"
     }
     CompositeTypes: {
@@ -279,6 +349,7 @@ export const Constants = {
         "baño_privado",
         "jacuzzi",
       ],
+      estado_reserva: ["en_curso", "finalizado"],
       estados: ["disponible", "ocupado"],
     },
   },

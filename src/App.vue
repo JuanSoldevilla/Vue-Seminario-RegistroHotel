@@ -19,8 +19,9 @@ const reservaId = ref<number | null>(null)
 </script>
 
 <template>
-  <main class="min-h-screen bg-background text-foreground">
-    <nav class="h-16 border-b bg-muted/40 flex justify-between items-center px-6">
+  <main class="min-h-screen bg-background text-foreground print:bg-white print:text-black">
+    <!-- NAV: se oculta al imprimir -->
+    <nav class="h-16 border-b bg-muted/40 flex justify-between items-center px-6 print:hidden">
       <div class="flex items-center gap-3 w-full max-w-md">
         <Input v-model.number="reservaId" type="number" min="1" placeholder="Ingrese número de registro"
           class="w-full pl-3 bg-background" />
@@ -31,7 +32,7 @@ const reservaId = ref<number | null>(null)
           </Button>
         </RouterLink>
 
-        <div v-if="reservaId" >
+        <div v-if="reservaId">
           <Button class="bg-cyan-600 hover:bg-cyan-700 text-white rounded-md transition cursor-pointer"
             @click.prevent="reservaId = null">
             <Icon icon="tdesign:clear" />
@@ -61,7 +62,8 @@ const reservaId = ref<number | null>(null)
       </DropdownMenu>
     </nav>
 
-    <router-view class="p-6" />
+    <!-- Contenido de las vistas -->
+    <router-view class="p-6 print:p-0" />
   </main>
 </template>
 

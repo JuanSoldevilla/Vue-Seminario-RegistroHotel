@@ -58,6 +58,20 @@ declare module 'vue-router/auto-routes' {
       { id: ParamValue<false> },
       | never
     >,
+    '/registros/boleta/[...catchAll]': RouteRecordInfo<
+      '/registros/boleta/[...catchAll]',
+      '/registros/boleta/:catchAll(.*)',
+      { catchAll: ParamValue<true> },
+      { catchAll: ParamValue<false> },
+      | never
+    >,
+    '/registros/boleta/[id]': RouteRecordInfo<
+      '/registros/boleta/[id]',
+      '/registros/boleta/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
   }
 
   /**
@@ -98,6 +112,18 @@ declare module 'vue-router/auto-routes' {
     'src/pages/registros/[id].vue': {
       routes:
         | '/registros/[id]'
+      views:
+        | never
+    }
+    'src/pages/registros/boleta/[...catchAll].vue': {
+      routes:
+        | '/registros/boleta/[...catchAll]'
+      views:
+        | never
+    }
+    'src/pages/registros/boleta/[id].vue': {
+      routes:
+        | '/registros/boleta/[id]'
       views:
         | never
     }

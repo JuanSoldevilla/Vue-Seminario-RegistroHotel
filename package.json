@@ -18,11 +18,11 @@
     "format": "prettier --write src/",
     "supabase:init": "supabase init --force",
     "supabase:login": "supabase login",
-    "supabase:link": "supabase link --project-ref azmjivtnwzlorheqegcc",
+    "supabase:link": "supabase link --project-ref pjnyohdelrijdrxytdxm",
     "db:migrate:new": "supabase migration new registros",
     "db:reset": "supabase db reset --linked",
     "db:seed": "node --env-file=.env database/seed.js",
-    "supabase:types": "npx supabase gen types typescript --project-id azmjivtnwzlorheqegcc --schema public > database/types.ts"
+    "supabase:types": "npx supabase gen types typescript --project-id pjnyohdelrijdrxytdxm --schema public > database/types.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^10.1.0",
